@@ -12,5 +12,3 @@
  * @subpackage Cf7_Multi_Step_Conditional_Addon/public/partials
  */
 ?>
-
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->

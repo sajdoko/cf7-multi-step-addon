@@ -22,15 +22,15 @@
  */
 class Cf7_Multi_Step_Conditional_Addon_Deactivator {
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function deactivate() {
+  /**
+   * Short Description. (use period)
+   *
+   * Long Description.
+   *
+   * @since    1.0.0
+   */
+  public static function deactivate() {
 
-	}
+  }
 
 }
