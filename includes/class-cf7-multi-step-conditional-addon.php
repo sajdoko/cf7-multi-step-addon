@@ -72,7 +72,11 @@ class Cf7_Multi_Step_Conditional_Addon {
     } else {
       $this->version = '1.0.0';
     }
-    $this->plugin_name = 'cf7_multi_step_conditional_addon';
+    if (defined('CF7_MULTI_STEP_CONDITIONAL_ADDON_NAME')) {
+      $this->plugin_name = CF7_MULTI_STEP_CONDITIONAL_ADDON_NAME;
+    } else {
+      $this->plugin_name = 'cf7_multi_step_conditional_addon';
+    }
 
     $this->load_dependencies();
     $this->set_locale();
@@ -162,6 +166,9 @@ class Cf7_Multi_Step_Conditional_Addon {
 
     // Add menu item
     $this->loader->add_action('admin_menu', $plugin_admin, 'cf7_multi_step_conditional_addon_add_admin_menu', 99);
+
+    // If Contact Form 7 is deactivated than deactivate the plugin
+    $this->loader->add_action('deactivated_plugin', $plugin_admin, 'detect_contact_form_7_deactivation', 10, 2 );
 
   }
 

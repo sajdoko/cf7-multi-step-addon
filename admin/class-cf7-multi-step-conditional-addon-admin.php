@@ -129,5 +129,4 @@ class Cf7_Multi_Step_Conditional_Addon_Admin {
     return array_merge($settings_link, $links);
   }
 
-
 }

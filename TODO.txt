@@ -1,5 +1,5 @@
 1- Clean boilerplate comments&code DONE
 2- Create plugin settings page DONE
   2.1- Lots of stuff
-3- Check if Contact Form 7 is active on plugin attivation, else deactivate and display warning
+3- Check if Contact Form 7 is active on plugin attivation, else deactivate and display warning DONE
 4- To be continue..

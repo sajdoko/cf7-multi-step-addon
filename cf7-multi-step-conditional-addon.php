@@ -23,6 +23,7 @@ if (!defined('WPINC')) {
   die;
 }
 
+define('CF7_MULTI_STEP_CONDITIONAL_ADDON_NAME', 'cf7_multi_step_conditional_addon');
 define('CF7_MULTI_STEP_CONDITIONAL_ADDON_VERSION', '1.0.0');
 
 function activate_cf7_multi_step_conditional_addon() {
