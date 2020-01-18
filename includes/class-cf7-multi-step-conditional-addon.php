@@ -72,7 +72,7 @@ class Cf7_Multi_Step_Conditional_Addon {
     } else {
       $this->version = '1.0.0';
     }
-    $this->plugin_name = 'cf7-multi-step-conditional-addon';
+    $this->plugin_name = 'cf7_multi_step_conditional_addon';
 
     $this->load_dependencies();
     $this->set_locale();
@@ -156,6 +156,12 @@ class Cf7_Multi_Step_Conditional_Addon {
 
     $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
     $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+
+    // Add Settings link to the plugin
+    $this->loader->add_filter('plugin_action_links_' . plugin_basename(plugin_dir_path(__DIR__) . 'cf7-multi-step-conditional-addon.php'), $plugin_admin,'cf7_multi_step_conditional_addon_add_action_links');
+
+    // Add menu item
+    $this->loader->add_action('admin_menu', $plugin_admin, 'cf7_multi_step_conditional_addon_add_admin_menu', 99);
 
   }
 

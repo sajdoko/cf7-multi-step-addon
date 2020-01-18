@@ -100,4 +100,34 @@ class Cf7_Multi_Step_Conditional_Addon_Admin {
 
   }
 
+  public function cf7_multi_step_conditional_addon_add_admin_menu() {
+    /*
+     * Add a settings page for this plugin to the Settings menu.
+     *
+     */
+    add_submenu_page('wpcf7', __('CF7 Multi Step Options', $this->plugin_name), __('Multi Step Options', $this->plugin_name), 'manage_options', $this->plugin_name, array($this, 'display_plugin_setup_page'));
+  }
+
+  /**
+   * Render the settings page for this plugin.
+   *
+   */
+
+  public function display_plugin_setup_page() {
+    include_once 'partials/cf7-multi-step-conditional-addon-admin-display.php';
+  }
+
+  /**
+   * Add's action links to the plugins page.
+   *
+   */
+
+  public function cf7_multi_step_conditional_addon_add_action_links($links) {
+    $settings_link = array(
+      '<a href="' . admin_url('admin.php?page=' . $this->plugin_name) . '">' . __('Settings', $this->plugin_name) . '</a>',
+    );
+    return array_merge($settings_link, $links);
+  }
+
+
 }
