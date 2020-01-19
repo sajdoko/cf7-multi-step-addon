@@ -8,7 +8,7 @@
  * @wordpress-plugin
  * Plugin Name:       CF7 Multi Step Conditional Add-on
  * Plugin URI:        https://cf7multistepconditionaladdon.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Extends the Contact Form 7 plugin to create multi-step forms. Also add's the ability to make steps conditional depending on previous form fields.
  * Version:           1.0.0
  * Author:            Sajmir Doko
  * Author URI:        https://www.linkedin.com/in/sajmirdoko/

@@ -3,3 +3,15 @@
   2.1- Lots of stuff
 3- Check if Contact Form 7 is active on plugin attivation, else deactivate and display warning DONE
 4- To be continue..
+
+
+si do funksionoje:
+
+- forma e gjithe do te jete ne nje page dhe do kalohen stepet me javascript ose jquery duke i bere hide stepet e tjera dhe duke lene display vetem nje step
+- do shtohet tag 'step-separator' tek tabet default te cf7
+- tek default cf7 fields nese eshte shtuar 'step-separator' automatikisht i grupon fields ne steps ne nje array
+- nese eshte vlera e pare shtohet nje buton next ne fund
+- nese eshte grup i mesem fushash do shhtohen butonat back dhe next ne fund
+- nese eshte fusha e vundit do lihet butoni send default i formes
+- per ta bere stepin conditional tek 'step-separator' do shtohet nje opsion ku pyet nese ky step eshte conditional
+- 
