@@ -79,18 +79,17 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep {
     }
     $class = wpcf7_form_controls_class($tag->type, 'cmsca-multistep');
 
-    $options = array();
-
+    // echo json_encode($tag);
     $atts = array(
       'type' => 'hidden',
-      'name' => 'cmsca_multistep_tag',
+      'name' => "cmsca_multistep_tag[]",
       'class' => $tag->get_class_option($class),
-      'value' => '' . json_encode($options),
+      'value' => '',
     );
     $atts = wpcf7_format_atts($atts);
-    $html = sprintf('<input %1$s />', $atts);
+    // $html = sprintf('<input %1$s />', $atts);
+    $html = '<div class="step-separator"></div>';
 
-    // echo json_encode($tag);
     return $html;
   }
 
@@ -105,12 +104,11 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep {
       $class .= ' wpcf7-validates-as-required';
     }
 
-    $step_value = array();
     $atts = array(
       'type' => 'hidden',
       'class' => $tag->get_class_option($class),
-      'value' => $step_value,
-      'name' => 'cmsca-step',
+      'value' => '',
+      'name' => "cmsca_multistep_tag[]",
     );
     $atts = wpcf7_format_atts($atts);
     $html = sprintf('<input %1$s />', $atts);
@@ -140,5 +138,20 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep {
     ));
     return $messages;
   }
+
+  /**
+   * Remove br from hidden tags.
+   * @since    1.0.0
+   */
+  public function cmsca_wpcf7_form_elements_return_false($form) {
+    echo '<script>console.log('.json_encode($form).')</script>';
+    // return;
+    // return preg_replace_callback('/<p>(<input\stype="hidden"\sname="cmsca_multistep_tag\[\]"(?:.*?))<\/p>/ism', array($this, 'cmsca_wpcf7_form_elements_return_false_callback'), $form);
+    return preg_replace('/<p><div class="step-separator"><\/div><\/p>/ism', '<div class="step-separator"></div>', $form);
+  }
+
+  // public function cmsca_wpcf7_form_elements_return_false_callback($matches = array()) {
+  //   return "\n" . '<div style=\'display:none;\'>' . str_replace('<br>', '', str_replace('<br />', '', stripslashes_deep($matches[1]))) . '</div>' . "\n";
+  // }
 
 }
