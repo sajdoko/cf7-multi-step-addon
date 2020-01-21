@@ -67,13 +67,13 @@ class Cf7_Multi_Step_Conditional_Addon {
    * @since    1.0.0
    */
   public function __construct() {
-    if (defined('CF7_MULTI_STEP_CONDITIONAL_ADDON_VERSION')) {
-      $this->version = CF7_MULTI_STEP_CONDITIONAL_ADDON_VERSION;
+    if (defined('CMSCA_VERSION')) {
+      $this->version = CMSCA_VERSION;
     } else {
       $this->version = '1.0.0';
     }
-    if (defined('CF7_MULTI_STEP_CONDITIONAL_ADDON_NAME')) {
-      $this->plugin_name = CF7_MULTI_STEP_CONDITIONAL_ADDON_NAME;
+    if (defined('CMSCA_NAME')) {
+      $this->plugin_name = CMSCA_NAME;
     } else {
       $this->plugin_name = 'cf7_multi_step_conditional_addon';
     }
@@ -82,6 +82,7 @@ class Cf7_Multi_Step_Conditional_Addon {
     $this->set_locale();
     $this->define_admin_hooks();
     $this->define_public_hooks();
+    $this->define_multistep_hooks();
 
   }
 
@@ -94,6 +95,7 @@ class Cf7_Multi_Step_Conditional_Addon {
    * - Cf7_Multi_Step_Conditional_Addon_i18n. Defines internationalization functionality.
    * - Cf7_Multi_Step_Conditional_Addon_Admin. Defines all hooks for the admin area.
    * - Cf7_Multi_Step_Conditional_Addon_Public. Defines all hooks for the public side of the site.
+   * - Cf7_Multi_Step_Conditional_Addon_Multistep. Defines multistep functionalitiy of the plugin.
    *
    * Create an instance of the loader which will be used to register the hooks
    * with WordPress.
@@ -125,6 +127,11 @@ class Cf7_Multi_Step_Conditional_Addon {
      * side of the site.
      */
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-cf7-multi-step-conditional-addon-public.php';
+
+    /**
+     * The class responsible for the multistep functionalitiy of the plugin.
+     */
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-cf7-multi-step-conditional-addon-multistep.php';
 
     $this->loader = new Cf7_Multi_Step_Conditional_Addon_Loader();
 
@@ -158,17 +165,17 @@ class Cf7_Multi_Step_Conditional_Addon {
 
     $plugin_admin = new Cf7_Multi_Step_Conditional_Addon_Admin($this->get_plugin_name(), $this->get_version());
 
-    $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
-    $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+    $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'cmsca_enqueue_styles');
+    $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'cmsca_enqueue_scripts');
 
     // Add Settings link to the plugin
-    $this->loader->add_filter('plugin_action_links_' . plugin_basename(plugin_dir_path(__DIR__) . 'cf7-multi-step-conditional-addon.php'), $plugin_admin,'cf7_multi_step_conditional_addon_add_action_links');
+    $this->loader->add_filter('plugin_action_links_' . plugin_basename(plugin_dir_path(__DIR__) . 'cf7-multi-step-conditional-addon.php'), $plugin_admin,'cmsca_add_action_links');
 
     // Add menu item
-    $this->loader->add_action('admin_menu', $plugin_admin, 'cf7_multi_step_conditional_addon_add_admin_menu', 99);
+    $this->loader->add_action('admin_menu', $plugin_admin, 'cmsca_add_admin_menu', 99);
 
-    // If Contact Form 7 is deactivated than deactivate the plugin
-    $this->loader->add_action('deactivated_plugin', $plugin_admin, 'detect_contact_form_7_deactivation', 10, 2 );
+    // Check Contact Form 7 plugin status
+    $this->loader->add_action('plugins_loaded', $plugin_admin, 'cmsca_check_for_cf7', 10);
 
   }
 
@@ -185,6 +192,23 @@ class Cf7_Multi_Step_Conditional_Addon {
 
     $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
     $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+
+  }
+
+  /**
+   * Register all of the hooks related to the multistep functionality of the plugin.
+   *
+   * @since    1.0.0
+   * @access   private
+   */
+  private function define_multistep_hooks() {
+
+    $plugin_multistep = new Cf7_Multi_Step_Conditional_Addon_Multistep($this->get_plugin_name(), $this->get_version());
+
+    $this->loader->add_action('admin_init', $plugin_multistep, 'cmsca_add_multistep_tag_generator', 30);
+    $this->loader->add_action('wpcf7_init', $plugin_multistep, 'cmsca_add_multistep_shortcode');
+
+    $this->loader->add_filter('wpcf7_messages', $plugin_multistep, 'cmsca_multistep_messages');
 
   }
 

@@ -14,4 +14,3 @@ si do funksionoje:
 - nese eshte grup i mesem fushash do shhtohen butonat back dhe next ne fund
 - nese eshte fusha e vundit do lihet butoni send default i formes
 - per ta bere stepin conditional tek 'step-separator' do shtohet nje opsion ku pyet nese ky step eshte conditional
-- 
