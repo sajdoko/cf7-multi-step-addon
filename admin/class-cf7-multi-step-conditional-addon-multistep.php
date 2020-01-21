@@ -73,6 +73,7 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep {
    */
   public function cmsca_multistep_shortcode_handler($tag) {
     $tag = new WPCF7_FormTag($tag);
+
     if (empty($tag->name)) {
       return $this->cmsca_multistep_shortcode_handler_old($tag);
     }
@@ -89,7 +90,7 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep {
     $atts = wpcf7_format_atts($atts);
     $html = sprintf('<input %1$s />', $atts);
 
-    echo json_encode($tag);
+    // echo json_encode($tag);
     return $html;
   }
 
@@ -99,16 +100,12 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep {
    */
   public function cmsca_multistep_shortcode_handler_old($tag) {
     $class = wpcf7_form_controls_class($tag->type, 'cmsca-multistep');
-    $class .= ' cmsca-multistep';
+
     if ('multistep*' === $tag->type) {
       $class .= ' wpcf7-validates-as-required';
     }
 
-    $value = (string) reset($tag->values);
-
-    $multistep_values = $this->cmsca_format_multistep_value($value);
-    $step_value = $multistep_values['curr_step'] . '-' . $multistep_values['total_steps'];
-
+    $step_value = array();
     $atts = array(
       'type' => 'hidden',
       'class' => $tag->get_class_option($class),
@@ -144,29 +141,4 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep {
     return $messages;
   }
 
-  /**
-   * Return the step value and next url in an array.  URL may be empty.
-   */
-  public function cmsca_format_multistep_value($valueString) {
-    $no_url = false;
-    $next_url = '';
-
-    $i = stripos($valueString, '-');
-    $curr_step = substr($valueString, 0, $i);
-    $j = stripos($valueString, '-', $i + 1);
-    if ($j === FALSE) {
-      $j = strlen($valueString);
-      $no_url = true;
-    }
-    $total_steps = substr($valueString, $i + 1, $j - ($i + 1));
-    if (!$no_url) {
-      $next_url = substr($valueString, $j + 1);
-    }
-
-    return array(
-      'curr_step' => $curr_step,
-      'total_steps' => $total_steps,
-      'next_url' => $next_url,
-    );
-  }
 }
