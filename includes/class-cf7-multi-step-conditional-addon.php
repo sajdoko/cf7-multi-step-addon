@@ -209,7 +209,7 @@ class Cf7_Multi_Step_Conditional_Addon {
     $this->loader->add_action('wpcf7_init', $plugin_multistep, 'cmsca_add_multistep_shortcode');
 
     $this->loader->add_filter('wpcf7_messages', $plugin_multistep, 'cmsca_multistep_messages');
-    $this->loader->add_filter('wpcf7_form_elements', $plugin_multistep, 'cmsca_wpcf7_form_elements_return_false');
+    $this->loader->add_filter('wpcf7_form_elements', $plugin_multistep, 'cmsca_wpcf7_form_elements_process');
 
   }
 

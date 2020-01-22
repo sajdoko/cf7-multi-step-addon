@@ -88,7 +88,7 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep {
     );
     $atts = wpcf7_format_atts($atts);
     // $html = sprintf('<input %1$s />', $atts);
-    $html = '<div class="step-separator"></div>';
+    $html = '<div class="cmsca-step-separator"></div>';
 
     return $html;
   }
@@ -111,7 +111,8 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep {
       'name' => "cmsca_multistep_tag[]",
     );
     $atts = wpcf7_format_atts($atts);
-    $html = sprintf('<input %1$s />', $atts);
+    // $html = sprintf('<input %1$s />', $atts);
+    $html = '<div class="cmsca-step-separator"></div>';
 
     return $html;
   }
@@ -140,18 +141,30 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep {
   }
 
   /**
-   * Remove br from hidden tags.
+   * Check if there are step separators. If so, process the form in multisteps.
    * @since    1.0.0
    */
-  public function cmsca_wpcf7_form_elements_return_false($form) {
-    echo '<script>console.log('.json_encode($form).')</script>';
-    // return;
-    // return preg_replace_callback('/<p>(<input\stype="hidden"\sname="cmsca_multistep_tag\[\]"(?:.*?))<\/p>/ism', array($this, 'cmsca_wpcf7_form_elements_return_false_callback'), $form);
-    return preg_replace('/<p><div class="step-separator"><\/div><\/p>/ism', '<div class="step-separator"></div>', $form);
+  public function cmsca_wpcf7_form_elements_process($form) {
+    $cmsca_step_div = '<div class="cmsca-step-separator"></div>';
+    $cmsca_step_div_class = 'cmsca-step-separator';
+    if(preg_match_all('/' . preg_quote($cmsca_step_div_class, '/') . '/', $form, $maches)) {
+      $form = preg_replace('/<p>|<\/p>|<br \/>/', '', $form); // Remove paragraphs and new lines
+      foreach ($maches[0] as $key => $value) {
+        $is_step = 'step';
+        reset($maches[0]);
+        if ($key === key($maches[0])){$is_step = 'first-step';}
+        end($maches[0]);
+        if ($key === key($maches[0])){$is_step = 'last-step';}
+        $is_first_step = ($key == 0) ? '' : '</div>';
+        $form = preg_replace('/' . preg_quote($cmsca_step_div, '/') . '/', $is_first_step . '<div class="cmsca-step-separator">', $form, 1);
+        $form = preg_replace('/' . preg_quote($value, '/') . '/', 'cmsca-step-' . $key . ' ' . $is_step , $form, 1);
+      }
+      $form = '<div class="cmsca-multistep-form">' . $form . '</div>';
+      echo '<script>console.log('.json_encode($form).')</script>';
+      return $form;
+    } else {
+      return $form;
+    }
   }
-
-  // public function cmsca_wpcf7_form_elements_return_false_callback($matches = array()) {
-  //   return "\n" . '<div style=\'display:none;\'>' . str_replace('<br>', '', str_replace('<br />', '', stripslashes_deep($matches[1]))) . '</div>' . "\n";
-  // }
 
 }
