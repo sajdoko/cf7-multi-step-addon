@@ -8,6 +8,7 @@
 ul.cmsca-multistep-progressbar {
   overflow: hidden;
   margin: 0px;
+  padding: 1em 0;
   /*CSS counters to number the steps*/
   counter-reset: step;
 }
@@ -54,6 +55,12 @@ ul.cmsca-multistep-progressbar {
 .cmsca-multistep-progressbar li.active:before, .cmsca-multistep-progressbar li.active:after {
   background: #ee0979;
   color: white;
+}
+
+.cmsca-multistep-form .cmsca-multistep-form-footer {
+  margin: 0px;
+  padding: 1em 0;
+  text-align: right;
 }
 
 .cmsca-multistep-form .step, .cmsca-multistep-form .last-step {

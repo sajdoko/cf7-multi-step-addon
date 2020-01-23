@@ -91,8 +91,8 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
     $cmsca_step_titles = array();
     $cmsca_step_classes_regex = '/\[CMSCA-CLASSES\]([^`]*?)\[\/CMSCA-CLASSES\]/';
     $cmsca_step_title_regex = '/\[CMSCA-NAME\]([^`]*?)\[\/CMSCA-NAME\]/';
-    $next_step_button = '<button type="button" name="cmsca_next_button" class="next action-button">Next</button>';
-    $previous_step_button = '<button type="button" name="cmsca_previous_button" class="previous action-button">Previous</button>';
+    $previous_step_button = '<button type="button" class="cmsca_previous_button" style="display:none;">Previous</button>';
+    $next_step_button = '<button type="button" class="cmsca_next_button">Next</button>';
 
     if (preg_match_all('/' . preg_quote($cmsca_step_separator) . '/', $form, $step_maches)) {
       $form = preg_replace('/<p>|<\/p>|<br \/>/', '', $form); // Remove paragraphs and new lines
@@ -110,7 +110,7 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
         $is_step = 'step';
         reset($step_maches[0]);
         if ($key === key($step_maches[0])) {
-          $is_step = 'first-step';
+          $is_step = 'first-step cmsca-step-active';
           $not_first_step = '';
         }
         end($step_maches[0]);
@@ -118,7 +118,7 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
           $is_step = 'last-step';
         }
         $form = preg_replace('/' . preg_quote($cmsca_step_separator) . '/', $not_first_step . '<div class="cmsca-step-separator">', $form, 1);
-        $form = preg_replace('/' . preg_quote($cmsca_step_div_class) . '/', 'cmsca-step-' . ((int) $key + 1) . ' ' . $is_step . $cmsca_step_classes, $form, 1);
+        $form = preg_replace('/' . preg_quote($cmsca_step_div_class) . '/', 'cmsca-step ' . $is_step . $cmsca_step_classes, $form, 1);
       }
       $ul_progressbar = $this->cmsca_build_progressbar($cmsca_step_titles);
       $footer_form = '<div class="cmsca-multistep-form-footer">' . $previous_step_button . $next_step_button . '</div>';
@@ -140,11 +140,17 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
     }
 
     $progressbar = '<div class="cmsca-multistep-form-header"><ul class="cmsca-multistep-progressbar">';
+    $li_width = round((100 / count($step_titles)), 2) . '%';
     foreach ($step_titles as $key => $title) {
+      $is_first_li = '';
+      reset($step_titles);
+      if ($key === key($step_titles)) {
+        $is_first_li = ' class="active"';
+      }
       if ($title == '') {
         $title = 'Step ' . ((int) $key + 1);
       }
-      $progressbar .= '<li>' . $title . '</li>';
+      $progressbar .= '<li' . $is_first_li . ' style="width:'.$li_width.'">' . $title . '</li>';
     }
     $progressbar .= '</ul></div>';
     return $progressbar;
