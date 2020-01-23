@@ -5,17 +5,6 @@
  *
  * @link       https://www.linkedin.com/in/sajmirdoko/
  * @since      1.0.0
- *
- * @package    Cf7_Multi_Step_Conditional_Addon
- * @subpackage Cf7_Multi_Step_Conditional_Addon/public
- */
-
-/**
- * The public-facing functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the public-facing stylesheet and JavaScript.
- *
  * @package    Cf7_Multi_Step_Conditional_Addon
  * @subpackage Cf7_Multi_Step_Conditional_Addon/public
  * @author     Sajmir Doko <sajdoko@gmail.com>

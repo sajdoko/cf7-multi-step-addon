@@ -25,9 +25,27 @@ if (!defined('ABSPATH')) {
     <table class="form-table">
       <tbody>
         <tr>
-          <th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-name' ); ?>"><?php echo esc_html( __( 'Name', $this->plugin_name ) ); ?></label>
+          <th scope="row">
+            <label for="<?php echo esc_attr( $args['content'] . '-name' ); ?>"><?php echo esc_html( __( 'Name', $this->plugin_name ) ); ?></label>
           </th>
-          <td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" /><br>
+          <td>
+            <input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" readonly="readonly" /><br>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <label for="<?php echo esc_attr( $args['content'] . '-values' ); ?>"><?php echo esc_html( __( 'Step heading title', $this->plugin_name ) ); ?></label>
+          </th>
+          <td>
+            <input type="text" name="values" class="oneline" id="<?php echo esc_attr( $args['content'] . '-values' ); ?>" />
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <label for="<?php echo esc_attr( $args['content'] . '-class' ); ?>"><?php echo esc_html( __( 'Class attribute', $this->plugin_name ) ); ?></label>
+          </th>
+          <td>
+            <input type="text" name="class" class="classvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-class' ); ?>" />
           </td>
         </tr>
       </tbody>
@@ -35,8 +53,7 @@ if (!defined('ABSPATH')) {
   </fieldset>
 </div>
 <div class="insert-box">
-  <input type="hidden" name="values" value="" />
-  <input type="text" name="multistep" class="tag code" readonly="readonly" onfocus="this.select()" />
+  <input type="text" name="<?php echo esc_attr( $args['title'] ); ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
 
   <div class="submitbox">
     <input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', $this->plugin_name ) ); ?>" />

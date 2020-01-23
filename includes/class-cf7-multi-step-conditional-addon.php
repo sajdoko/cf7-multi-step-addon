@@ -82,7 +82,8 @@ class Cf7_Multi_Step_Conditional_Addon {
     $this->set_locale();
     $this->define_admin_hooks();
     $this->define_public_hooks();
-    $this->define_multistep_hooks();
+    $this->define_multistep_admin_hooks();
+    $this->define_multistep_public_hooks();
 
   }
 
@@ -95,7 +96,8 @@ class Cf7_Multi_Step_Conditional_Addon {
    * - Cf7_Multi_Step_Conditional_Addon_i18n. Defines internationalization functionality.
    * - Cf7_Multi_Step_Conditional_Addon_Admin. Defines all hooks for the admin area.
    * - Cf7_Multi_Step_Conditional_Addon_Public. Defines all hooks for the public side of the site.
-   * - Cf7_Multi_Step_Conditional_Addon_Multistep. Defines multistep functionalitiy of the plugin.
+   * - Cf7_Multi_Step_Conditional_Addon_Multistep_Admin. Defines multistep admin functionalitiy of the plugin.
+   * - Cf7_Multi_Step_Conditional_Addon_Multistep_Public. Defines multistep public functionalitiy of the plugin.
    *
    * Create an instance of the loader which will be used to register the hooks
    * with WordPress.
@@ -129,9 +131,14 @@ class Cf7_Multi_Step_Conditional_Addon {
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-cf7-multi-step-conditional-addon-public.php';
 
     /**
-     * The class responsible for the multistep functionalitiy of the plugin.
+     * The class responsible for the multistep admin functionalitiy of the plugin.
      */
-    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-cf7-multi-step-conditional-addon-multistep.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-cf7-multi-step-conditional-addon-multistep-admin.php';
+
+    /**
+     * The class responsible for the multistep public functionalitiy of the plugin.
+     */
+    require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-cf7-multi-step-conditional-addon-multistep-public.php';
 
     $this->loader = new Cf7_Multi_Step_Conditional_Addon_Loader();
 
@@ -196,20 +203,35 @@ class Cf7_Multi_Step_Conditional_Addon {
   }
 
   /**
-   * Register all of the hooks related to the multistep functionality of the plugin.
+   * Register all of the hooks related to the multistep admin functionality of the plugin.
    *
    * @since    1.0.0
    * @access   private
    */
-  private function define_multistep_hooks() {
+  private function define_multistep_admin_hooks() {
 
-    $plugin_multistep = new Cf7_Multi_Step_Conditional_Addon_Multistep($this->get_plugin_name(), $this->get_version());
+    $plugin_multistep_admin = new Cf7_Multi_Step_Conditional_Addon_Multistep_Admin($this->get_plugin_name(), $this->get_version());
 
-    $this->loader->add_action('admin_init', $plugin_multistep, 'cmsca_add_multistep_tag_generator', 30);
-    $this->loader->add_action('wpcf7_init', $plugin_multistep, 'cmsca_add_multistep_shortcode');
+    $this->loader->add_action('admin_init', $plugin_multistep_admin, 'cmsca_add_multistep_tag_generator', 30);
 
-    $this->loader->add_filter('wpcf7_messages', $plugin_multistep, 'cmsca_multistep_messages');
-    $this->loader->add_filter('wpcf7_form_elements', $plugin_multistep, 'cmsca_wpcf7_form_elements_process');
+    $this->loader->add_filter('wpcf7_messages', $plugin_multistep_admin, 'cmsca_multistep_messages');
+    $this->loader->add_filter('wpcf7_collect_mail_tags', $plugin_multistep_admin, 'cmsca_remove_multistep_mail_tag');
+
+  }
+
+  /**
+   * Register all of the hooks related to the multistep public functionality of the plugin.
+   *
+   * @since    1.0.0
+   * @access   private
+   */
+  private function define_multistep_public_hooks() {
+
+    $plugin_multistep_public = new Cf7_Multi_Step_Conditional_Addon_Multistep_Public($this->get_plugin_name(), $this->get_version());
+
+    $this->loader->add_action('wpcf7_init', $plugin_multistep_public, 'cmsca_add_multistep_shortcode');
+
+    $this->loader->add_filter('wpcf7_form_elements', $plugin_multistep_public, 'cmsca_wpcf7_form_elements_process');
 
   }
 
