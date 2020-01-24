@@ -158,12 +158,12 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
       $is_first_li = '';
       reset($step_titles);
       if ($key === key($step_titles)) {
-        $is_first_li = ' class="active"';
+        $is_first_li = ' active';
       }
       if ($title == '') {
         $title = 'Step ' . ((int) $key + 1);
       }
-      $progressbar .= '<li' . $is_first_li . ' style="width:' . $li_width . '">' . $title . '</li>';
+      $progressbar .= '<li class="step-' . $key . $is_first_li . '" style="width:' . $li_width . '">' . $title . '</li>';
     }
     $progressbar .= '</ul></div>';
     return $progressbar;
