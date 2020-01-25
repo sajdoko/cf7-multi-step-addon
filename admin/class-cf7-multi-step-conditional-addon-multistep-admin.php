@@ -44,13 +44,13 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Admin {
   }
 
   /**
-   * Add multistep to wpcf7 tag generator.
+   * Add cmscamultistep to wpcf7 tag generator.
    * @since    1.0.0
    */
   public function cmsca_add_multistep_tag_generator() {
     if (class_exists('WPCF7_TagGenerator')) {
       $tag_generator = WPCF7_TagGenerator::get_instance();
-      $tag_generator->add('multistep', esc_html(__('multistep', $this->plugin_name)), array($this, 'cmsca_multistep_tag_generator'));
+      $tag_generator->add('cmscamultistep', esc_html(__('cmscamultistep', $this->plugin_name)), array($this, 'cmsca_multistep_tag_generator'));
     }
   }
 
@@ -80,13 +80,13 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Admin {
   }
 
   /**
-   * Remove multistep mail tag from mail tab tag suggestions.
+   * Remove cmscamultistep mail tag from mail tab tag suggestions.
    * @since    1.0.0
    */
   public function cmsca_remove_multistep_mail_tag($args) {
     if (is_array($args) && !empty($args)) {
       foreach ($args as $key => $value) {
-        if (preg_match('/multistep/', $value)) {
+        if (preg_match('/cmscamultistep/', $value)) {
           unset($args[$key]);
         }
       }

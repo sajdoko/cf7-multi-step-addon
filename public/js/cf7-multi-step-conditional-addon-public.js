@@ -9,9 +9,22 @@
       var steps = $(".cmsca-multistep-form .cmsca-step");
       steps.each(function(k, v) {
         if ($(this).hasClass("cmsca-step-active")) {
-          $(this).hide();
-          $(this).removeClass("cmsca-step-active");
           if (clickedButton == "next") {
+            var inputs = $(this).find('input');
+            var validationRequired = false;
+            inputs.each(function(k, v){
+              if ($(this).hasClass('wpcf7-validates-as-required')) {
+                $(this).addClass( 'wpcf7-not-valid' );
+                $(this).attr( 'aria-invalid', 'true' );
+                validationRequired = true;
+                console.log(v);
+              }
+            });
+            if (validationRequired == true) {
+                return false;
+            }
+            $(this).hide();
+            $(this).removeClass("cmsca-step-active");
             k++;
             $("ul.cmsca-multistep-progressbar .step-" + k).addClass('active');
             if ($(this).next().hasClass("last-step")) {
@@ -30,6 +43,8 @@
               .next()
               .addClass("cmsca-step-active");
           } else if (clickedButton == "previous") {
+            $(this).hide();
+            $(this).removeClass("cmsca-step-active");
             $("ul.cmsca-multistep-progressbar .step-" + k, "ul.cmsca-multistep-progressbar .step-" + k-1).removeClass('active');
             $(".wpcf7-submit").hide();
             if ($(this).prev().hasClass("first-step")) {

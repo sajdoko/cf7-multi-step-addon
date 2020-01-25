@@ -49,15 +49,15 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
    */
   public function cmsca_add_multistep_shortcode() {
     if (function_exists('wpcf7_add_form_tag')) {
-      wpcf7_add_form_tag(array('multistep'), array($this, 'cmsca_multistep_shortcode_handler'), true);
+      wpcf7_add_form_tag(array('cmscamultistep'), array($this, 'cmsca_multistep_shortcode_handler'), true);
     } else if (function_exists('wpcf7_add_shortcode')) {
-      wpcf7_add_shortcode(array('multistep'), array($this, 'cmsca_multistep_shortcode_handler'), true);
+      wpcf7_add_shortcode(array('cmscamultistep'), array($this, 'cmsca_multistep_shortcode_handler'), true);
     }
   }
 
   /**
-   * Handle the multistep handler
-   * Adds the multistep separator tags to form.
+   * Handle the cmscamultistep handler
+   * Adds the cmscamultistep separator tags to form.
    * @since    1.0.0
    */
   public function cmsca_multistep_shortcode_handler($tag) {
