@@ -128,11 +128,16 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
           $not_first_step = '';
         }
         end($step_maches[0]);
-        if ($key === key($step_maches[0])) {
+        if ($key === key($step_maches[0]) - 1) {
           $is_step = 'last-step';
+          $form = preg_replace('/' . preg_quote($cmsca_step_separator) . '/', $not_first_step . '<div class="cmsca-step-separator">', $form, 1);
+          $form = preg_replace('/' . preg_quote($cmsca_step_div_class) . '/', 'cmsca-step ' . $is_step . $cmsca_step_classes, $form, 1);
+        } else if ($key === key($step_maches[0])) {
+          $form = preg_replace('/' . preg_quote($cmsca_step_separator) . '/', '', $form, 1);
+        } else {
+            $form = preg_replace('/' . preg_quote($cmsca_step_separator) . '/', $not_first_step . '<div class="cmsca-step-separator">', $form, 1);
+            $form = preg_replace('/' . preg_quote($cmsca_step_div_class) . '/', 'cmsca-step ' . $is_step . $cmsca_step_classes, $form, 1);
         }
-        $form = preg_replace('/' . preg_quote($cmsca_step_separator) . '/', $not_first_step . '<div class="cmsca-step-separator">', $form, 1);
-        $form = preg_replace('/' . preg_quote($cmsca_step_div_class) . '/', 'cmsca-step ' . $is_step . $cmsca_step_classes, $form, 1);
       }
       $ul_progressbar = $this->cmsca_build_progressbar($cmsca_step_titles);
       $footer_form = '<div class="cmsca-multistep-form-footer">' . $previous_step_button . $next_step_button . $send_button . '</div>';
@@ -151,7 +156,7 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
     if (!is_array($step_titles)) {
       return;
     }
-
+    array_pop($step_titles);
     $progressbar = '<div class="cmsca-multistep-form-header"><ul class="cmsca-multistep-progressbar">';
     $li_width = round((100 / count($step_titles)), 2) . '%';
     foreach ($step_titles as $key => $title) {
