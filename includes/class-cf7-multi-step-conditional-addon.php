@@ -233,6 +233,9 @@ class Cf7_Multi_Step_Conditional_Addon {
 
     $this->loader->add_filter('wpcf7_form_elements', $plugin_multistep_public, 'cmsca_wpcf7_form_elements_process');
 
+    $this->loader->add_action('wp_ajax_cmsca_public_ajax', $plugin_multistep_public, 'cmsca_public_ajax');
+    $this->loader->add_action('wp_ajax_nopriv_cmsca_public_ajax', $plugin_multistep_public, 'cmsca_public_ajax');
+
   }
 
   /**

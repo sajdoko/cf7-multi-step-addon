@@ -173,4 +173,21 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
     $progressbar .= '</ul></div>';
     return $progressbar;
   }
+
+  
+  public function cmsca_public_ajax() {
+    if (!check_ajax_referer($this->plugin_name, 'security')) {
+      wp_send_json_error(__('Security is not valid!', $this->plugin_name));
+      die();
+    }
+    if (isset($_POST['action']) && $_POST['action'] == 'cmsca_public_ajax') {
+      $to_validate = isset($_POST['validate']) ? $_POST['validate'] : array();
+
+        wp_send_json_success(__($to_validate, $this->plugin_name));
+        die();
+    } else {
+      wp_send_json_error(__('Action is not valid!', $this->plugin_name));
+      die();
+    }
+  }
 }

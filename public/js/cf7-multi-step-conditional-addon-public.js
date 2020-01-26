@@ -12,15 +12,31 @@
           if (clickedButton == "next") {
             var inputs = $(this).find('input');
             var validationRequired = false;
+            var inputsToValidate = [];
             inputs.each(function(k, v){
               if ($(this).hasClass('wpcf7-validates-as-required')) {
                 $(this).addClass( 'wpcf7-not-valid' );
                 $(this).attr( 'aria-invalid', 'true' );
                 validationRequired = true;
-                console.log(v);
+                inputsToValidate.push({
+                    type: $(this).attr('type') + '*',
+                    basetype: $(this).attr('type'),
+                    value:  $(this).val(),
+                    name: $(this).attr('name')
+                });
+                // console.log(v);
               }
             });
             if (validationRequired == true) {
+              // console.log(inputsToValidate);
+                var data = {
+                  action: 'cmsca_public_ajax',
+                  security: cmsca_public_ajax_object.security,
+                  validate: inputsToValidate
+                };
+                jQuery.post(cmsca_public_ajax_object.ajaxurl, data, function(response) {
+                  console.log(response);
+                });
                 return false;
             }
             $(this).hide();

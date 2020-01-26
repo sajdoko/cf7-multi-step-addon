@@ -62,7 +62,14 @@ class Cf7_Multi_Step_Conditional_Addon_Public {
   public function enqueue_scripts() {
 
     wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/cf7-multi-step-conditional-addon-public.js', array('jquery'), $this->version, false);
-
+    wp_localize_script($this->plugin_name, 'cmsca_public_ajax_object',
+    array(
+      'ajaxurl' => admin_url('admin-ajax.php'),
+      'security' => wp_create_nonce($this->plugin_name),
+      // 'data_var_1' => 'value 1',
+      // 'data_var_2' => 'value 2',
+    )
+  );
   }
 
 }
