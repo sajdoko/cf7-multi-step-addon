@@ -13,10 +13,6 @@
 /**
  * Register all actions and filters for the plugin.
  *
- * Maintain a list of all hooks that are registered throughout
- * the plugin, and register them with the WordPress API. Call the
- * run function to execute the list of actions and filters.
- *
  * @package    Cf7_Multi_Step_Conditional_Addon
  * @subpackage Cf7_Multi_Step_Conditional_Addon/includes
  * @author     Sajmir Doko <sajdoko@gmail.com>

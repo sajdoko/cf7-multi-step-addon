@@ -43,20 +43,12 @@ class Cf7_Multi_Step_Conditional_Addon_Admin {
 
   }
 
-  /**
-   * Register the stylesheets for the admin area.
-   * @since    1.0.0
-   */
   public function cmsca_enqueue_styles() {
 
     wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/cf7-multi-step-conditional-addon-admin.css', array(), $this->version, 'all');
 
   }
 
-  /**
-   * Register the JavaScript for the admin area.
-   * @since    1.0.0
-   */
   public function cmsca_enqueue_scripts() {
 
     wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/cf7-multi-step-conditional-addon-admin.js', array('jquery'), $this->version, false);
@@ -64,24 +56,15 @@ class Cf7_Multi_Step_Conditional_Addon_Admin {
   }
 
   public function cmsca_add_admin_menu() {
-    /*
-     * Add a settings page for this plugin to the Settings menu.
-     */
+
     add_submenu_page('wpcf7', __('CF7 Multi Step Options', $this->plugin_name), __('Multi Step Options', $this->plugin_name), 'manage_options', $this->plugin_name, array($this, 'cmsca_display_plugin_setup_page'));
+
   }
 
-  /**
-   * Render the settings page for this plugin.
-   * @since    1.0.0
-   */
   public function cmsca_display_plugin_setup_page() {
     include_once 'partials/cf7-multi-step-conditional-addon-admin-display.php';
   }
 
-  /**
-   * Add's action links to the plugins page.
-   * @since    1.0.0
-   */
   public function cmsca_add_action_links($links) {
     $settings_link = array(
       '<a href="' . admin_url('admin.php?page=' . $this->plugin_name) . '">' . __('Settings', $this->plugin_name) . '</a>',
@@ -89,13 +72,10 @@ class Cf7_Multi_Step_Conditional_Addon_Admin {
     return array_merge($settings_link, $links);
   }
 
-  /**
-   * Check Contact Form 7 plugin status and show appropriate admin error.
-   * @since    1.0.0
-   */
   public function cmsca_check_for_cf7() {
     add_action('admin_notices', array($this, 'cmsca_display_admin_warning'));
   }
+
   function cmsca_display_admin_warning() {
     $html = '<div class="error" id="messages"><p>';
     if (defined('WPCF7_VERSION') && version_compare(WPCF7_VERSION, 5) < 0) {

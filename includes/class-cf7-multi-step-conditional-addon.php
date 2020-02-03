@@ -3,9 +3,6 @@
 /**
  * The file that defines the core plugin class
  *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
- *
  * @link       https://www.linkedin.com/in/sajmirdoko/
  * @since      1.0.0
  *
@@ -15,12 +12,6 @@
 
 /**
  * The core plugin class.
- *
- * This is used to define internationalization, admin-specific hooks, and
- * public-facing site hooks.
- *
- * Also maintains the unique identifier of this plugin as well as the current
- * version of the plugin.
  *
  * @since      1.0.0
  * @package    Cf7_Multi_Step_Conditional_Addon
@@ -60,10 +51,6 @@ class Cf7_Multi_Step_Conditional_Addon {
   /**
    * Define the core functionality of the plugin.
    *
-   * Set the plugin name and the plugin version that can be used throughout the plugin.
-   * Load the dependencies, define the locale, and set the hooks for the admin area and
-   * the public-facing side of the site.
-   *
    * @since    1.0.0
    */
   public function __construct() {
@@ -89,16 +76,6 @@ class Cf7_Multi_Step_Conditional_Addon {
 
   /**
    * Load the required dependencies for this plugin.
-   *
-   * Include the following files that make up the plugin:
-   *
-   * - Cf7_Multi_Step_Conditional_Addon_Loader. Orchestrates the hooks of the plugin.
-   * - Cf7_Multi_Step_Conditional_Addon_i18n. Defines internationalization functionality.
-   * - Cf7_Multi_Step_Conditional_Addon_Admin. Defines all hooks for the admin area.
-   * - Cf7_Multi_Step_Conditional_Addon_Public. Defines all hooks for the public side of the site.
-   * - Cf7_Multi_Step_Conditional_Addon_Multistep_Admin. Defines multistep admin functionalitiy of the plugin.
-   * - Cf7_Multi_Step_Conditional_Addon_Multistep_Public. Defines multistep public functionalitiy of the plugin.
-   *
    * Create an instance of the loader which will be used to register the hooks
    * with WordPress.
    *
@@ -107,37 +84,16 @@ class Cf7_Multi_Step_Conditional_Addon {
    */
   private function load_dependencies() {
 
-    /**
-     * The class responsible for orchestrating the actions and filters of the
-     * core plugin.
-     */
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cf7-multi-step-conditional-addon-loader.php';
 
-    /**
-     * The class responsible for defining internationalization functionality
-     * of the plugin.
-     */
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cf7-multi-step-conditional-addon-i18n.php';
 
-    /**
-     * The class responsible for defining all actions that occur in the admin area.
-     */
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-cf7-multi-step-conditional-addon-admin.php';
 
-    /**
-     * The class responsible for defining all actions that occur in the public-facing
-     * side of the site.
-     */
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-cf7-multi-step-conditional-addon-public.php';
 
-    /**
-     * The class responsible for the multistep admin functionalitiy of the plugin.
-     */
     require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-cf7-multi-step-conditional-addon-multistep-admin.php';
 
-    /**
-     * The class responsible for the multistep public functionalitiy of the plugin.
-     */
     require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-cf7-multi-step-conditional-addon-multistep-public.php';
 
     $this->loader = new Cf7_Multi_Step_Conditional_Addon_Loader();
@@ -146,9 +102,6 @@ class Cf7_Multi_Step_Conditional_Addon {
 
   /**
    * Define the locale for this plugin for internationalization.
-   *
-   * Uses the Cf7_Multi_Step_Conditional_Addon_i18n class in order to set the domain and to register the hook
-   * with WordPress.
    *
    * @since    1.0.0
    * @access   private
@@ -175,13 +128,10 @@ class Cf7_Multi_Step_Conditional_Addon {
     $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'cmsca_enqueue_styles');
     $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'cmsca_enqueue_scripts');
 
-    // Add Settings link to the plugin
     $this->loader->add_filter('plugin_action_links_' . plugin_basename(plugin_dir_path(__DIR__) . 'cf7-multi-step-conditional-addon.php'), $plugin_admin,'cmsca_add_action_links');
 
-    // Add menu item
     $this->loader->add_action('admin_menu', $plugin_admin, 'cmsca_add_admin_menu', 99);
 
-    // Check Contact Form 7 plugin status
     $this->loader->add_action('plugins_loaded', $plugin_admin, 'cmsca_check_for_cf7', 10);
 
   }

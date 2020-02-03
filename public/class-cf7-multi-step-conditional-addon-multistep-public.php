@@ -174,7 +174,7 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
     return $progressbar;
   }
 
-  
+
   public function cmsca_public_ajax() {
     if (!check_ajax_referer($this->plugin_name, 'security')) {
       wp_send_json_error(__('Security is not valid!', $this->plugin_name));
@@ -182,12 +182,67 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
     }
     if (isset($_POST['action']) && $_POST['action'] == 'cmsca_public_ajax') {
       $to_validate = isset($_POST['validate']) ? $_POST['validate'] : array();
-
-        wp_send_json_success(__($to_validate, $this->plugin_name));
-        die();
+      $valid = array();
+      foreach ($to_validate as $key => $val) {
+        // $valid[$val['name']] = $this->cmsca_validate_text_fields($val['formId'], $val['type'], $val['value']);
+        $validate = $this->cmsca_validate_text_fields($val['formId'], $val['type'], $val['value']);
+        if ($validate['valid'] == false) {
+          $valid[$val['name']] = $validate['message'];
+        }
+      }
+      if (!empty($valid)) {
+        wp_send_json_error($valid);
+      } else {
+        wp_send_json_success(__('Valid fields!', $this->plugin_name));
+      }
+      die();
     } else {
       wp_send_json_error(__('Action is not valid!', $this->plugin_name));
       die();
     }
+  }
+
+  public function cmsca_validate_text_fields($form_id, $type, $value)  {
+    $result = array('valid' => true, 'message' => 'ok');
+    require_once WPCF7_PLUGIN_DIR . '/includes/formatting.php';
+    if ( $type == 'text' ) {
+      if ( $value == '' ) {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
+      }
+    }
+    if ( $type == 'email' ) {
+      if ( $value == '' ) {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
+      } else if ( $value != '' && !wpcf7_is_email( $value )) {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_email');
+      }
+    }
+    if ( $type == 'url' ) {
+      if ( $value == '' ) {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
+      } else if ( $value != '' && !wpcf7_is_url( $value )) {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_url');
+      }
+    }
+    if ( $type == 'tel' ) {
+      if ( $value == '' ) {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
+      } else if ( $value != '' && !wpcf7_is_tel( $value )) {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_tel');
+      }
+    }
+    return $result;
+  }
+
+  public function cmsca_get_form_messages($form_id, $message_key)  {
+    $messages = get_post_meta($form_id, '_messages', true);
+    return $messages[$message_key];
   }
 }
