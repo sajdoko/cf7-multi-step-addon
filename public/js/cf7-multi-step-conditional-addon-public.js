@@ -1,22 +1,27 @@
 (function ($) {
   "use strict";
-
   $(document).ready(function () {
     $(".cmsca_next_button, .cmsca_previous_button").click(function () {
+      function notValidWarning(target, message) {
+        var $target = $(target);
+        $('.wpcf7-not-valid-tip', $target).remove();
+        $('<span role="alert" class="wpcf7-not-valid-tip"></span>')
+          .text(message).appendTo($target);
+      };
       var clickedButton = $(this).hasClass("cmsca_next_button") ?
         "next" :
         "previous";
       var steps = $(".cmsca-multistep-form .cmsca-step");
       var CF7Id = steps.parent().parent().find("input[name='_wpcf7']").val();
-      var $form = steps.parent().parent().parent().find("form");
-      var $message = $( '.wpcf7-response-output', $form );
-      steps.each(function (k, v) {
+      var $cmscaForm = steps.parent().parent().parent().find("form");
+      var $message = $('.wpcf7-response-output', $cmscaForm);
+      steps.each(function (k, _v) {
         var step = $(this);
         if ($(this).hasClass("cmsca-step-active")) {
           if (clickedButton == "next") {
             var inputs = $(this).find('input');
             var inputsToValidate = [];
-            inputs.each(function (k, v) {
+            inputs.each(function (_k, v) {
               if ($(this).hasClass('wpcf7-validates-as-required')) {
                 $(this).addClass('wpcf7-not-valid');
                 $(this).attr('aria-invalid', 'true');
@@ -29,6 +34,10 @@
               }
             });
             if (inputsToValidate.length > 0) {
+              if (!$(this).hasClass("last-step")) {
+                $('.cmsca-multistep-form-footer', $cmscaForm).append('<span class="ajax-loader cmsca-loader"></span>');
+              }
+              $('.cmsca-loader', $cmscaForm).addClass('is-active');
               var data = {
                 action: 'cmsca_public_ajax',
                 security: cmsca_public_ajax_object.security,
@@ -39,19 +48,13 @@
                 type: 'POST',
                 data: data,
                 success: function (response) {
+                  $('.cmsca-loader', $cmscaForm).remove();
                   if (response.success == false) {
                     $.each(response.data, function (i, n) {
-                      $(n.into, $form).each(function () {
-                        wpcf7.notValidTip(i, n);
-                        $('.wpcf7-form-control', i).addClass('wpcf7-not-valid');
-                        $('[aria-invalid]', i).attr('aria-invalid', 'true');
-                      });
+                      notValidWarning("." + i, n);
                     });
-
                     $message.addClass('wpcf7-validation-errors');
-                    $form.addClass('invalid');
-
-                    // wpcf7.triggerEvent(data.into, 'invalid', detail);
+                    $cmscaForm.addClass('invalid');
                     return false;
                   } else {
                     step.hide();
@@ -59,13 +62,13 @@
                     k++;
                     $("ul.cmsca-multistep-progressbar .step-" + k).addClass('active');
                     if (step.next().hasClass("last-step")) {
-                      $(".wpcf7-submit").show();
+                      $(".wpcf7-submit", $cmscaForm).show();
                       $(".cmsca_next_button").hide();
                       $(".cmsca_previous_button").show();
                     } else {
                       $(".cmsca_next_button").show();
                       $(".cmsca_previous_button").show();
-                      $(".wpcf7-submit").hide();
+                      $(".wpcf7-submit", $cmscaForm).hide();
                     }
                     step
                       .next()
@@ -74,7 +77,6 @@
                       .next()
                       .addClass("cmsca-step-active");
                   }
-                  console.log(response.success);
                 }
               });
             } else {
@@ -83,13 +85,13 @@
               k++;
               $("ul.cmsca-multistep-progressbar .step-" + k).addClass('active');
               if ($(this).next().hasClass("last-step")) {
-                $(".wpcf7-submit").show();
+                $(".wpcf7-submit", $cmscaForm).show();
                 $(".cmsca_next_button").hide();
                 $(".cmsca_previous_button").show();
               } else {
                 $(".cmsca_next_button").show();
                 $(".cmsca_previous_button").show();
-                $(".wpcf7-submit").hide();
+                $(".wpcf7-submit", $cmscaForm).hide();
               }
               $(this)
                 .next()
@@ -102,7 +104,7 @@
             $(this).hide();
             $(this).removeClass("cmsca-step-active");
             $("ul.cmsca-multistep-progressbar .step-" + k, "ul.cmsca-multistep-progressbar .step-" + k - 1).removeClass('active');
-            $(".wpcf7-submit").hide();
+            $(".wpcf7-submit", $cmscaForm).hide();
             if ($(this).prev().hasClass("first-step")) {
               $(".cmsca_previous_button").hide();
               $(".cmsca_next_button").show();
