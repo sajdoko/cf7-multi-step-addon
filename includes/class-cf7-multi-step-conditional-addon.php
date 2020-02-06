@@ -5,54 +5,16 @@
  *
  * @link       https://www.linkedin.com/in/sajmirdoko/
  * @since      1.0.0
- *
- * @package    Cf7_Multi_Step_Conditional_Addon
- * @subpackage Cf7_Multi_Step_Conditional_Addon/includes
- */
-
-/**
- * The core plugin class.
- *
- * @since      1.0.0
  * @package    Cf7_Multi_Step_Conditional_Addon
  * @subpackage Cf7_Multi_Step_Conditional_Addon/includes
  * @author     Sajmir Doko <sajdoko@gmail.com>
  */
 class Cf7_Multi_Step_Conditional_Addon {
 
-  /**
-   * The loader that's responsible for maintaining and registering all hooks that power
-   * the plugin.
-   *
-   * @since    1.0.0
-   * @access   protected
-   * @var      Cf7_Multi_Step_Conditional_Addon_Loader    $loader    Maintains and registers all hooks for the plugin.
-   */
   protected $loader;
-
-  /**
-   * The unique identifier of this plugin.
-   *
-   * @since    1.0.0
-   * @access   protected
-   * @var      string    $plugin_name    The string used to uniquely identify this plugin.
-   */
   protected $plugin_name;
-
-  /**
-   * The current version of the plugin.
-   *
-   * @since    1.0.0
-   * @access   protected
-   * @var      string    $version    The current version of the plugin.
-   */
   protected $version;
 
-  /**
-   * Define the core functionality of the plugin.
-   *
-   * @since    1.0.0
-   */
   public function __construct() {
     if (defined('CMSCA_VERSION')) {
       $this->version = CMSCA_VERSION;
@@ -74,14 +36,6 @@ class Cf7_Multi_Step_Conditional_Addon {
 
   }
 
-  /**
-   * Load the required dependencies for this plugin.
-   * Create an instance of the loader which will be used to register the hooks
-   * with WordPress.
-   *
-   * @since    1.0.0
-   * @access   private
-   */
   private function load_dependencies() {
 
     require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-cf7-multi-step-conditional-addon-loader.php';
@@ -100,12 +54,6 @@ class Cf7_Multi_Step_Conditional_Addon {
 
   }
 
-  /**
-   * Define the locale for this plugin for internationalization.
-   *
-   * @since    1.0.0
-   * @access   private
-   */
   private function set_locale() {
 
     $plugin_i18n = new Cf7_Multi_Step_Conditional_Addon_i18n();
@@ -114,13 +62,6 @@ class Cf7_Multi_Step_Conditional_Addon {
 
   }
 
-  /**
-   * Register all of the hooks related to the admin area functionality
-   * of the plugin.
-   *
-   * @since    1.0.0
-   * @access   private
-   */
   private function define_admin_hooks() {
 
     $plugin_admin = new Cf7_Multi_Step_Conditional_Addon_Admin($this->get_plugin_name(), $this->get_version());
@@ -136,13 +77,6 @@ class Cf7_Multi_Step_Conditional_Addon {
 
   }
 
-  /**
-   * Register all of the hooks related to the public-facing functionality
-   * of the plugin.
-   *
-   * @since    1.0.0
-   * @access   private
-   */
   private function define_public_hooks() {
 
     $plugin_public = new Cf7_Multi_Step_Conditional_Addon_Public($this->get_plugin_name(), $this->get_version());
@@ -152,12 +86,6 @@ class Cf7_Multi_Step_Conditional_Addon {
 
   }
 
-  /**
-   * Register all of the hooks related to the multistep admin functionality of the plugin.
-   *
-   * @since    1.0.0
-   * @access   private
-   */
   private function define_multistep_admin_hooks() {
 
     $plugin_multistep_admin = new Cf7_Multi_Step_Conditional_Addon_Multistep_Admin($this->get_plugin_name(), $this->get_version());
@@ -169,12 +97,6 @@ class Cf7_Multi_Step_Conditional_Addon {
 
   }
 
-  /**
-   * Register all of the hooks related to the multistep public functionality of the plugin.
-   *
-   * @since    1.0.0
-   * @access   private
-   */
   private function define_multistep_public_hooks() {
 
     $plugin_multistep_public = new Cf7_Multi_Step_Conditional_Addon_Multistep_Public($this->get_plugin_name(), $this->get_version());
@@ -188,42 +110,18 @@ class Cf7_Multi_Step_Conditional_Addon {
 
   }
 
-  /**
-   * Run the loader to execute all of the hooks with WordPress.
-   *
-   * @since    1.0.0
-   */
   public function run() {
     $this->loader->run();
   }
 
-  /**
-   * The name of the plugin used to uniquely identify it within the context of
-   * WordPress and to define internationalization functionality.
-   *
-   * @since     1.0.0
-   * @return    string    The name of the plugin.
-   */
   public function get_plugin_name() {
     return $this->plugin_name;
   }
 
-  /**
-   * The reference to the class that orchestrates the hooks with the plugin.
-   *
-   * @since     1.0.0
-   * @return    Cf7_Multi_Step_Conditional_Addon_Loader    Orchestrates the hooks of the plugin.
-   */
   public function get_loader() {
     return $this->loader;
   }
 
-  /**
-   * Retrieve the version number of the plugin.
-   *
-   * @since     1.0.0
-   * @return    string    The version number of the plugin.
-   */
   public function get_version() {
     return $this->version;
   }

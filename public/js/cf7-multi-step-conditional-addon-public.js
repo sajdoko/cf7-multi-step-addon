@@ -1,13 +1,22 @@
 (function ($) {
   "use strict";
   $(document).ready(function () {
+    function notValidWarning(target, message) {
+      var $target = $(target);
+      $('.wpcf7-not-valid-tip', $target).remove();
+      $('<span role="alert" class="wpcf7-not-valid-tip"></span>')
+        .text(message).appendTo($target);
+    };
+    function clearNotValidWarning(target) {
+      var $target = $(target);
+      $( '.wpcf7-not-valid-tip', $target ).remove();
+      $( '[aria-invalid]', $target ).attr( 'aria-invalid', 'false' );
+      $( '.wpcf7-form-control', $target ).removeClass( 'wpcf7-not-valid' );
+      $( '.wpcf7-response-output', $target )
+        .hide().empty().removeAttr( 'role' )
+        .removeClass( 'wpcf7-mail-sent-ok wpcf7-mail-sent-ng wpcf7-validation-errors wpcf7-spam-blocked' );
+    };
     $(".cmsca_next_button, .cmsca_previous_button").click(function () {
-      function notValidWarning(target, message) {
-        var $target = $(target);
-        $('.wpcf7-not-valid-tip', $target).remove();
-        $('<span role="alert" class="wpcf7-not-valid-tip"></span>')
-          .text(message).appendTo($target);
-      };
       var clickedButton = $(this).hasClass("cmsca_next_button") ?
         "next" :
         "previous";
@@ -19,17 +28,16 @@
         var step = $(this);
         if ($(this).hasClass("cmsca-step-active")) {
           if (clickedButton == "next") {
-            var inputs = $(this).find('input');
+            var inputs = $(this).find('input, select');
             var inputsToValidate = [];
             inputs.each(function (_k, v) {
               if ($(this).hasClass('wpcf7-validates-as-required')) {
-                $(this).addClass('wpcf7-not-valid');
-                $(this).attr('aria-invalid', 'true');
+                clearNotValidWarning('.' + $(this)[0].name.replace(/(\[|\])/g, ''));
                 inputsToValidate.push({
                   formId: CF7Id,
-                  type: $(this).attr('type'),
+                  type: $(this)[0].type,
                   value: $(this).val(),
-                  name: $(this).attr('name')
+                  name: $(this)[0].name.replace(/(\[|\])/g, '')
                 });
               }
             });

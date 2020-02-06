@@ -11,31 +11,9 @@
  */
 class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
 
-  /**
-   * The ID of this plugin.
-   *
-   * @since    1.0.0
-   * @access   private
-   * @var      string    $plugin_name    The ID of this plugin.
-   */
   private $plugin_name;
-
-  /**
-   * The version of this plugin.
-   *
-   * @since    1.0.0
-   * @access   private
-   * @var      string    $version    The current version of this plugin.
-   */
   private $version;
 
-  /**
-   * Initialize the class and set its properties.
-   *
-   * @since    1.0.0
-   * @param      string    $plugin_name       The name of this plugin.
-   * @param      string    $version    The version of this plugin.
-   */
   public function __construct($plugin_name, $version) {
 
     $this->plugin_name = $plugin_name;
@@ -43,10 +21,6 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
 
   }
 
-  /**
-   * Initialize wpcf7 shortcode.
-   * @since    1.0.0
-   */
   public function cmsca_add_multistep_shortcode() {
     if (function_exists('wpcf7_add_form_tag')) {
       wpcf7_add_form_tag(array('cmscamultistep'), array($this, 'cmsca_multistep_shortcode_handler'), true);
@@ -55,11 +29,6 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
     }
   }
 
-  /**
-   * Handle the cmscamultistep handler
-   * Adds the cmscamultistep separator tags to form.
-   * @since    1.0.0
-   */
   public function cmsca_multistep_shortcode_handler($tag) {
     if (empty($tag->name)) {
       return '';
@@ -80,10 +49,6 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
     return "[CMSCA-STEP-SEPARATOR][CMSCA-CLASSES]" . $classes_string . "[/CMSCA-CLASSES][CMSCA-NAME]" . $step_name_string . "[/CMSCA-NAME]";
   }
 
-  /**
-   * Check if there are step separators. If so, process the form in multisteps.
-   * @since    1.0.0
-   */
   public function cmsca_wpcf7_form_elements_process($form) {
     $cmsca_step_separator = '[CMSCA-STEP-SEPARATOR]';
     $cmsca_step_div_class = 'cmsca-step-separator';
@@ -148,10 +113,6 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
     }
   }
 
-  /**
-   * Build form progressbar.
-   * @since    1.0.0
-   */
   public function cmsca_build_progressbar($step_titles) {
     if (!is_array($step_titles)) {
       return;
@@ -184,8 +145,7 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
       $to_validate = isset($_POST['validate']) ? $_POST['validate'] : array();
       $valid = array();
       foreach ($to_validate as $key => $val) {
-        // $valid[$val['name']] = $this->cmsca_validate_text_fields($val['formId'], $val['type'], $val['value']);
-        $validate = $this->cmsca_validate_text_fields($val['formId'], $val['type'], $val['value']);
+        $validate = $this->cmsca_validate_fields($val['formId'], $val['type'], $val['value']);
         if ($validate['valid'] == false) {
           $valid[$val['name']] = $validate['message'];
         }
@@ -202,7 +162,7 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
     }
   }
 
-  public function cmsca_validate_text_fields($form_id, $type, $value)  {
+  public function cmsca_validate_fields($form_id, $type, $value)  {
     $result = array('valid' => true, 'message' => 'ok');
     require_once WPCF7_PLUGIN_DIR . '/includes/formatting.php';
     if ( $type == 'text' ) {
@@ -236,6 +196,12 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
       } else if ( $value != '' && !wpcf7_is_tel( $value )) {
         $result['valid'] = false;
         $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_tel');
+      }
+    }
+    if ( $type == 'select-one' || $type == 'select-multiple'  ) {
+      if ( $value == '' ) {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
       }
     }
     return $result;
