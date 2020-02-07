@@ -30,8 +30,12 @@
           if (clickedButton == "next") {
             var inputs = $(this).find('input, select');
             var inputsToValidate = [];
+            var checkboxToValidate = [];
             inputs.each(function (_k, v) {
-              if ($(this).hasClass('wpcf7-validates-as-required')) {
+              if ($(this).hasClass('wpcf7-validates-as-required') || $(this)[0].type == 'checkbox') {
+                if ($(this)[0].type == 'checkbox') {
+                  console.log($(this)[0].checked);
+                }
                 clearNotValidWarning('.' + $(this)[0].name.replace(/(\[|\])/g, ''));
                 inputsToValidate.push({
                   formId: CF7Id,

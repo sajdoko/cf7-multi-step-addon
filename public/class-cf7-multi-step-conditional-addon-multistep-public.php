@@ -199,9 +199,29 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
       }
     }
     if ( $type == 'select-one' || $type == 'select-multiple'  ) {
+      if (is_array( $value )) {
+        foreach ( $value as $key => $val ) {
+          if ( $val == '') {
+            unset( $value[$key] );
+          }
+        }
+        if (count($value) == 0) {
+          $result['valid'] = false;
+          $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
+        }
+      } else if ( $value == '' ) {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
+      }
+    }
+    if ( $type == 'date' ) {
+      $value = trim( strtr( (string) $value, "\n", " " ) );
       if ( $value == '' ) {
         $result['valid'] = false;
         $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
+      } elseif ( $value == '' || ! wpcf7_is_date( $value ) ) {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_date');
       }
     }
     return $result;
