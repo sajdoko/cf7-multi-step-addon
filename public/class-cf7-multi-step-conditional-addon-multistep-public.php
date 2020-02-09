@@ -224,6 +224,10 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
         $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_date');
       }
     }
+    if ($type == 'checkbox') {
+      $result['valid'] = false;
+      $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
+    }
     return $result;
   }
 

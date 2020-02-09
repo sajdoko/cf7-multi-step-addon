@@ -16,6 +16,14 @@
         .hide().empty().removeAttr( 'role' )
         .removeClass( 'wpcf7-mail-sent-ok wpcf7-mail-sent-ng wpcf7-validation-errors wpcf7-spam-blocked' );
     };
+    function groupObjectBy(array, property) {
+      var hash = {};
+      for (var i = 0; i < array.length; i++) {
+          if (!hash[array[i][property]]) hash[array[i][property]] = [];
+          hash[array[i][property]].push(array[i]);
+      }
+      return hash;
+    }
     $(".cmsca_next_button, .cmsca_previous_button").click(function () {
       var clickedButton = $(this).hasClass("cmsca_next_button") ?
         "next" :
@@ -28,23 +36,46 @@
         var step = $(this);
         if ($(this).hasClass("cmsca-step-active")) {
           if (clickedButton == "next") {
+
             var inputs = $(this).find('input, select');
-            var inputsToValidate = [];
-            var checkboxToValidate = [];
+            var inputsToValidate = new Array();
+            var checkboxToValidate = new Array();
+            var valClassString = 'wpcf7-validates-as-required';
             inputs.each(function (_k, v) {
-              if ($(this).hasClass('wpcf7-validates-as-required') || $(this)[0].type == 'checkbox') {
+              if ($(this).hasClass(valClassString) || $(this)[0].type == 'checkbox') {
                 if ($(this)[0].type == 'checkbox') {
-                  console.log($(this)[0].checked);
+                  if ($(this).parent().parent().hasClass(valClassString) || $(this).parent().parent().parent().hasClass(valClassString)) {
+                    checkboxToValidate.push({
+                          formId: CF7Id,
+                          type: $(this)[0].type,
+                          value: $(this).val(),
+                          name: $(this)[0].name.replace(/(\[|\])/g, ''),
+                          checked: $(this)[0].checked
+                        });
+                  }
+                } else {
+                  inputsToValidate.push({
+                    formId: CF7Id,
+                    type: $(this)[0].type,
+                    value: $(this).val(),
+                    name: $(this)[0].name.replace(/(\[|\])/g, '')
+                  });
                 }
                 clearNotValidWarning('.' + $(this)[0].name.replace(/(\[|\])/g, ''));
-                inputsToValidate.push({
-                  formId: CF7Id,
-                  type: $(this)[0].type,
-                  value: $(this).val(),
-                  name: $(this)[0].name.replace(/(\[|\])/g, '')
-                });
               }
             });
+            if (checkboxToValidate.length > 0) {
+              var groupedObj = groupObjectBy(checkboxToValidate, 'name');
+              $.each(groupedObj, function (key, val) {
+                var isChecked = false;
+                $.each(val, function (key, val2) {
+                  if (val2['checked'] == true) isChecked = true ;
+                });
+                if (isChecked == false) {
+                  inputsToValidate.push(val[0]);
+                }
+              });
+            }
             if (inputsToValidate.length > 0) {
               if (!$(this).hasClass("last-step")) {
                 $('.cmsca-multistep-form-footer', $cmscaForm).append('<span class="ajax-loader cmsca-loader"></span>');
