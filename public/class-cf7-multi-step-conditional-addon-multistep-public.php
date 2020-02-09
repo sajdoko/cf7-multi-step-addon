@@ -145,7 +145,7 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
       $to_validate = isset($_POST['validate']) ? $_POST['validate'] : array();
       $valid = array();
       foreach ($to_validate as $key => $val) {
-        $validate = $this->cmsca_validate_fields($val['formId'], $val['type'], $val['value']);
+        $validate = $this->cmsca_validate_fields($val['formId'], $val['type'], $val['value'], $val['name']);
         if ($validate['valid'] == false) {
           $valid[$val['name']] = $validate['message'];
         }
@@ -162,7 +162,7 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
     }
   }
 
-  public function cmsca_validate_fields($form_id, $type, $value)  {
+  public function cmsca_validate_fields($form_id, $type, $value, $name)  {
     $result = array('valid' => true, 'message' => 'ok');
     require_once WPCF7_PLUGIN_DIR . '/includes/formatting.php';
     if ( $type == 'text' ) {
@@ -225,8 +225,13 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
       }
     }
     if ($type == 'checkbox') {
-      $result['valid'] = false;
-      $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
+      if (preg_match('/acceptance-/', $name)) {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'accept_terms');
+      } else {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
+      }
     }
     return $result;
   }

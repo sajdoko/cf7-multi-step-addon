@@ -36,7 +36,7 @@
         var step = $(this);
         if ($(this).hasClass("cmsca-step-active")) {
           if (clickedButton == "next") {
-
+//TODO - File validation
             var inputs = $(this).find('input, select');
             var inputsToValidate = new Array();
             var checkboxToValidate = new Array();
@@ -52,6 +52,15 @@
                           name: $(this)[0].name.replace(/(\[|\])/g, ''),
                           checked: $(this)[0].checked
                         });
+                  } else if (!$(this).parent().parent().hasClass('optional')) {
+                    if(!$(this)[0].checked) {
+                      inputsToValidate.push({
+                        formId: CF7Id,
+                        type: $(this)[0].type,
+                        value: $(this).val(),
+                        name: $(this)[0].name.replace(/(\[|\])/g, '')
+                      });
+                    }
                   }
                 } else {
                   inputsToValidate.push({
