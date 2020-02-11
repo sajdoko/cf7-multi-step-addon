@@ -42,7 +42,7 @@
             var checkboxToValidate = new Array();
             var valClassString = 'wpcf7-validates-as-required';
             inputs.each(function (_k, v) {
-              if ($(this).hasClass(valClassString) || $(this)[0].type == 'checkbox') {
+              if ($(this).hasClass(valClassString) || $(this)[0].type == 'checkbox' || $(this)[0].type == 'file') {
                 if ($(this)[0].type == 'checkbox') {
                   if ($(this).parent().parent().hasClass(valClassString) || $(this).parent().parent().parent().hasClass(valClassString)) {
                     checkboxToValidate.push({

@@ -233,6 +233,12 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Public {
         $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
       }
     }
+    if ( $type == 'file' ) {
+      if ( $value == '' ) {
+        $result['valid'] = false;
+        $result['message'] = $this->cmsca_get_form_messages($form_id, 'invalid_required');
+      }
+    }
     return $result;
   }
 
