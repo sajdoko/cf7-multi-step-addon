@@ -12,7 +12,7 @@
       $( '.wpcf7-not-valid-tip', $target ).remove();
       $( '[aria-invalid]', $target ).attr( 'aria-invalid', 'false' );
       $( '.wpcf7-form-control', $target ).removeClass( 'wpcf7-not-valid' );
-      $( '.wpcf7-response-output', $target )
+      $( '.wpcf7-response-output')
         .hide().empty().removeAttr( 'role' )
         .removeClass( 'wpcf7-mail-sent-ok wpcf7-mail-sent-ng wpcf7-validation-errors wpcf7-spam-blocked' );
     };
@@ -36,7 +36,6 @@
         var step = $(this);
         if ($(this).hasClass("cmsca-step-active")) {
           if (clickedButton == "next") {
-//TODO - File validation
             var inputs = $(this).find('input, select');
             var inputsToValidate = new Array();
             var checkboxToValidate = new Array();
