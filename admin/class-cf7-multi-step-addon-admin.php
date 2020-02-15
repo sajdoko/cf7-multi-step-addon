@@ -5,11 +5,11 @@
  *
  * @link       https://www.linkedin.com/in/sajmirdoko/
  * @since      1.0.0
- * @package    Cf7_Multi_Step_Conditional_Addon
- * @subpackage Cf7_Multi_Step_Conditional_Addon/admin
+ * @package    Cf7_Multi_Step_Addon
+ * @subpackage Cf7_Multi_Step_Addon/admin
  * @author     Sajmir Doko <sajdoko@gmail.com>
  */
-class Cf7_Multi_Step_Conditional_Addon_Admin {
+class Cf7_Multi_Step_Addon_Admin {
 
   private $plugin_name;
   private $version;
@@ -23,13 +23,13 @@ class Cf7_Multi_Step_Conditional_Addon_Admin {
 
   public function cmsca_enqueue_styles() {
 
-    wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/cf7-multi-step-conditional-addon-admin.css', array(), $this->version, 'all');
+    wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/cf7-multi-step-addon-admin.css', array(), $this->version, 'all');
 
   }
 
   public function cmsca_enqueue_scripts() {
 
-    wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/cf7-multi-step-conditional-addon-admin.js', array('jquery'), $this->version, false);
+    wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/cf7-multi-step-addon-admin.js', array('jquery'), $this->version, false);
 
   }
 
@@ -40,7 +40,7 @@ class Cf7_Multi_Step_Conditional_Addon_Admin {
   }
 
   public function cmsca_display_plugin_setup_page() {
-    include_once 'partials/cf7-multi-step-conditional-addon-admin-display.php';
+    include_once 'partials/cf7-multi-step-addon-admin-display.php';
   }
 
   public function cmsca_add_action_links($links) {
@@ -57,12 +57,12 @@ class Cf7_Multi_Step_Conditional_Addon_Admin {
   function cmsca_display_admin_warning() {
     $html = '<div class="error" id="messages"><p>';
     if (defined('WPCF7_VERSION') && version_compare(WPCF7_VERSION, 5) < 0) {
-      $html .= sprintf(__('CF7 Multi-Step Conditional Add-on plugin requires Contact Form 7 version %s or above.', $this->plugin_name), 5);
+      $html .= sprintf(__('CF7 Multi-Step Add-on plugin requires Contact Form 7 version %s or above.', $this->plugin_name), 5);
     } else {
       if (!file_exists(WP_PLUGIN_DIR . '/contact-form-7/wp-contact-form-7.php')) {
-        $html .= sprintf(__('<strong>You must install Contact Form 7</strong> for the CF7 Multi-Step Conditional Add-on to work. <a href="%s" title="Contact Form 7">Install Now.</a>', $this->plugin_name), wp_nonce_url(admin_url('update.php?action=install-plugin&plugin=contact-form-7'), 'install-plugin_contact-form-7'));
+        $html .= sprintf(__('<strong>You must install Contact Form 7</strong> for the CF7 Multi-Step Add-on to work. <a href="%s" title="Contact Form 7">Install Now.</a>', $this->plugin_name), wp_nonce_url(admin_url('update.php?action=install-plugin&plugin=contact-form-7'), 'install-plugin_contact-form-7'));
       } else if (!in_array('contact-form-7/wp-contact-form-7.php', apply_filters('active_plugins', get_option('active_plugins')))) {
-        $html .= sprintf(__('<strong>You must activate Contact Form 7</strong> for the CF7 Multi-Step Conditional Add-on to work. <a href="%s" title="Contact Form 7">Activate Now.</a>', $this->plugin_name), wp_nonce_url(admin_url('plugins.php?action=activate&plugin=contact-form-7/wp-contact-form-7.php'), 'activate-plugin_contact-form-7/wp-contact-form-7.php'));
+        $html .= sprintf(__('<strong>You must activate Contact Form 7</strong> for the CF7 Multi-Step Add-on to work. <a href="%s" title="Contact Form 7">Activate Now.</a>', $this->plugin_name), wp_nonce_url(admin_url('plugins.php?action=activate&plugin=contact-form-7/wp-contact-form-7.php'), 'activate-plugin_contact-form-7/wp-contact-form-7.php'));
       } else {
         return;
       }

@@ -5,11 +5,11 @@
  *
  * @link       https://www.linkedin.com/in/sajmirdoko/
  * @since      1.0.0
- * @package    Cf7_Multi_Step_Conditional_Addon
- * @subpackage Cf7_Multi_Step_Conditional_Addon/admin
+ * @package    Cf7_Multi_Step_Addon
+ * @subpackage Cf7_Multi_Step_Addon/admin
  * @author     Sajmir Doko <sajdoko@gmail.com>
  */
-class Cf7_Multi_Step_Conditional_Addon_Multistep_Admin {
+class Cf7_Multi_Step_Addon_Multistep_Admin {
 
   private $plugin_name;
   private $version;
@@ -30,7 +30,7 @@ class Cf7_Multi_Step_Conditional_Addon_Multistep_Admin {
 
   public function cmsca_multistep_tag_generator($contact_form, $args = '') {
     $args = wp_parse_args($args, array());
-    include_once 'partials/cf7-multi-step-conditional-addon-multistep-box-display.php';
+    include_once 'partials/cf7-multi-step-addon-multistep-box-display.php';
   }
 
   public function cmsca_multistep_messages($messages) {

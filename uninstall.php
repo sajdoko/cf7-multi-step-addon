@@ -5,7 +5,7 @@
  *
  * @link       https://www.linkedin.com/in/sajmirdoko/
  * @since      1.0.0
- * @package    Cf7_Multi_Step_Conditional_Addon
+ * @package    Cf7_Multi_Step_Addon
  */
 
 // If uninstall not called from WordPress, then exit.
