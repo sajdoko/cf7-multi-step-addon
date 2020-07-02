@@ -17,29 +17,36 @@ if (!defined('ABSPATH')) {
 
   <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
   <hr>
-  <?php settings_errors();?>
+  <?php
+    settings_errors();
+    //Plugin options
+    $options = get_option($this->plugin_name);
+    echo "<pre>";
+    print_r($options);
+    echo "</pre>";
+  ?>
+  <form method="post" name="<?php echo $this->plugin_name; ?>_options" id="<?php echo $this->plugin_name; ?>_options" action="options.php">
     <?php
-      //Plugin options
-      $options = get_option($this->plugin_name);
       settings_fields($this->plugin_name);
       do_settings_sections($this->plugin_name);
     ?>
 
-  <form method="post" name="<?php echo $this->plugin_name; ?>_options" id="<?php echo $this->plugin_name; ?>_options" action="options.php">
-    <div id="poststuff">
-      <div id="post-body" class="metabox-holder columns-2">
-        <!-- main content -->
-        <div id="post-body-content">
-          <div class="postbox">
-            <div class="inside">
+    <table class="form-table" role="presentation">
 
-            </div>
-          </div>
-        </div>
-      </div>
-      <br class="clear">
-    </div>
+      <tr>
+        <th scope="row"><?php _e( 'Use plugin\'s css styles?' ); ?></th>
+        <td>
+          <fieldset>
+            <legend class="screen-reader-text"><span><?php _e( 'Use plugin\'s css styles?' ); ?></span></legend>
+            <label for="cmsca_load_css">
+              <input name="cmsca_load_css" type="checkbox" id="cmsca_load_css" value="on" <?php checked($options['cmsca_load_css'], 'on'); ?> />
+              <?php _e( 'Un-check to use theme\'s design' ); ?>
+            </label>
+          </fieldset>
+        </td>
+      </tr>
 
+    </table>
     <?php submit_button(__('Save Options', $this->plugin_name), 'primary', 'submit', TRUE);?>
   </form>
 </div>

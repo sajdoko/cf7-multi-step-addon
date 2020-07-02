@@ -69,6 +69,8 @@ class Cf7_Multi_Step_Addon {
     $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'cmsca_enqueue_styles');
     $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'cmsca_enqueue_scripts');
 
+    $this->loader->add_action('admin_init', $plugin_admin, 'cmsca_options_update');
+
     $this->loader->add_filter('plugin_action_links_' . plugin_basename(plugin_dir_path(__DIR__) . 'cf7-multi-step-addon.php'), $plugin_admin,'cmsca_add_action_links');
 
     $this->loader->add_action('admin_menu', $plugin_admin, 'cmsca_add_admin_menu', 99);
@@ -81,7 +83,11 @@ class Cf7_Multi_Step_Addon {
 
     $plugin_public = new Cf7_Multi_Step_Addon_Public($this->get_plugin_name(), $this->get_version());
 
-    $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
+    $this->loader->add_action('wp_footer', $plugin_public, 'echo_critical_css');
+
+    if ($this->check_plugin_options(false, 'cmsca_load_css') === 'on') {
+      $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
+    }
     $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 
   }
@@ -124,6 +130,23 @@ class Cf7_Multi_Step_Addon {
 
   public function get_version() {
     return $this->version;
+  }
+
+  public function check_plugin_options($parent_key = false, $key) {
+    $options = get_option($this->plugin_name);
+    if ($parent_key !== false) {
+      if (isset($options[$parent_key][$key])) {
+        return $options[$parent_key][$key];
+      } else {
+        return false;
+      }
+    } else {
+      if (isset($options[$key])) {
+        return $options[$key];
+      } else {
+        return false;
+      }
+    }
   }
 
 }
